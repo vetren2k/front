@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using myCity.Api.Data;
 using myCity.Api.Entities;
 using myCity.Api.Entities.Enums;
@@ -44,7 +44,16 @@ namespace myCity.Api.Services
 
         public async Task<TicketDto> CreateTicketAsync(CreateTicketResidentDto dto, int creatorId)
         {
-            var coords = await GetCoordinatesAsync(dto.City, dto.Street, dto.BuildingNumber);
+            decimal lat = dto.Latitude ?? 0m;
+            decimal lng = dto.Longitude ?? 0m;
+
+            if (lat == 0m && lng == 0m)
+            {
+                var coords = await GetCoordinatesAsync(dto.City, dto.Street, dto.BuildingNumber);
+                lat = coords.Latitude;
+                lng = coords.Longitude;
+            }
+
             var newTicket = new Ticket
             {
                 CreatorId = creatorId,
@@ -57,10 +66,10 @@ namespace myCity.Api.Services
                 BuildingNumber = dto.BuildingNumber,
                 FlatNumber = dto.FlatNumber,
                 Postcode = dto.Postcode,
-                Latitude = coords.Latitude,
-                Longitude = coords.Longitude,
+                Latitude = lat,
+                Longitude = lng,
                 CurrentStatus = TicketStatus.New,
-                Priority = TicketPriority.Normal, //potem urzednik zmieni na jaki chce
+                Priority = dto.Priority ?? TicketPriority.Normal,
                 CreationTimestamp = DateTime.UtcNow,
                 CurrentStatusTimestamp = DateTime.UtcNow
             };

@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 using myCity.Api.Data;
 using myCity.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp", policy =>
     {
         // React (Create React App i Vite)
-        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -58,7 +58,7 @@ builder.Services.AddSwaggerGen(options =>
    
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Autoryzacja JWT. Wpisz s³owo 'Bearer', dodaj spacje, a nastêpnie wklej swój token.\n\n",
+        Description = "Autoryzacja JWT. Wpisz sÅ‚owo 'Bearer', dodaj spacje, a nastÄ™pnie wklej swÃ³j token.\n\n",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -100,3 +100,4 @@ app.MapControllers();
 
 app.Run();
 //frontend check
+

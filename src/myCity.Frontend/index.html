@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityReport - Citizen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <div class="brand">
+                <h1>MyCity</h1>
+                <span class="role-badge" id="role-badge">GUEST</span>
+            </div>
+            
+            <button class="btn-primary full-width mt-4" id="btn-report-new">
+                <i class="fa-solid fa-plus"></i> Report New Event
+            </button>
+            
+            <div class="view-toggles mt-4">
+                <button class="toggle-btn active" data-view="map"><i class="fa-regular fa-map"></i> Map</button>
+                <button class="toggle-btn" data-view="list"><i class="fa-solid fa-list-ul"></i> List</button>
+            </div>
+            
+            <div class="filters mt-4">
+                <h3><i class="fa-solid fa-filter"></i> Filter by Status</h3>
+                <ul class="filter-list">
+                    <li class="active" data-status="all"><span>All</span> <span class="count" id="count-all">0</span></li>
+                    <li data-status="1"><span>Pending</span> <span class="count" id="count-pending">0</span></li>
+                    <li data-status="verified"><span>Verified</span> <span class="count">0</span></li>
+                    <li data-status="2"><span>In Progress</span> <span class="count" id="count-progress">0</span></li>
+                    <li data-status="3"><span>Resolved</span> <span class="count" id="count-resolved">0</span></li>
+                    <li data-status="4"><span>Rejected</span> <span class="count" id="count-rejected">0</span></li>
+                </ul>
+            </div>
+            
+            <div class="quick-stats mt-4">
+                <h3>Quick Stats</h3>
+                <div class="stat-row">
+                    <span>Total Reports:</span>
+                    <strong id="stat-total">0</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Pending:</span>
+                    <strong id="stat-pending" style="color: var(--status-pending)">0</strong>
+                </div>
+                <div class="stat-row">
+                    <span>In Progress:</span>
+                    <strong id="stat-inprogress" style="color: var(--status-progress)">0</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Resolved:</span>
+                    <strong id="stat-resolved-val" style="color: var(--status-resolved)">0</strong>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content">
+            <!-- Topbar -->
+            <header id="topbar">
+                <div class="spacer"></div>
+                <div class="user-controls" style="background: transparent; box-shadow: none; padding: 0;">
+                    <button class="btn-primary" id="btn-auth-action" style="padding: 0.4rem 1rem; font-size: 0.875rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <i class="fa-solid fa-right-to-bracket"></i> <span>Login</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Map View -->
+            <div id="map-view" class="view-area active">
+                <div id="map"></div>
+                
+                <!-- Map Prompt (Top Left Overlay) -->
+                <div id="map-prompt" class="hidden">
+                    <i class="fa-solid fa-location-dot"></i> Click anywhere on the map to report an event
+                </div>
+                
+                <!-- Severity Legend (Bottom Left Overlay) -->
+                <div id="severity-legend" class="map-overlay">
+                    <h4>Severity</h4>
+                    <ul>
+                        <li><span class="dot severity-low"></span> Low</li>
+                        <li><span class="dot severity-medium"></span> Medium</li>
+                        <li><span class="dot severity-high"></span> High</li>
+                        <li><span class="dot severity-critical"></span> Critical</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- List View (Hidden by default) -->
+            <div id="list-view" class="view-area hidden">
+                <div class="p-4">
+                    <h2>Event List</h2>
+                    <div id="list-container"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Report Modal -->
+    <div id="report-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Report New Event</h2>
+                <button class="btn-close" id="btn-close-report"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="location-box">
+                    <i class="fa-solid fa-location-dot"></i> Location: <span id="report-coords">40.7301, -74.0202</span>
+                </div>
+                <form id="report-form">
+                    <div class="form-group">
+                        <label>Title *</label>
+                        <input type="text" id="report-title" placeholder="Brief title of the issue or event" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea id="report-desc" rows="3" placeholder="Provide detailed information about the issue or event" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <div class="category-grid">
+                            <label class="category-btn"><input type="radio" name="category" value="Road Issue"><div><i class="fa-solid fa-road-barrier"></i> Road Issue</div></label>
+                            <label class="category-btn"><input type="radio" name="category" value="Safety Concern"><div><i class="fa-solid fa-triangle-exclamation"></i> Safety Concern</div></label>
+                            <label class="category-btn"><input type="radio" name="category" value="Community Event"><div><i class="fa-solid fa-champagne-glasses"></i> Community Event</div></label>
+                            <label class="category-btn"><input type="radio" name="category" value="Infrastructure"><div><i class="fa-solid fa-wrench"></i> Infrastructure</div></label>
+                            <label class="category-btn active"><input type="radio" name="category" value="Other" checked><div><i class="fa-solid fa-thumbtack"></i> Other</div></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Severity *</label>
+                        <div class="severity-toggles">
+                            <label class="sev-btn low"><input type="radio" name="severity" value="1"> Low</label>
+                            <label class="sev-btn medium active"><input type="radio" name="severity" value="2" checked> Medium</label>
+                            <label class="sev-btn high"><input type="radio" name="severity" value="3"> High</label>
+                            <label class="sev-btn critical"><input type="radio" name="severity" value="4"> Critical</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="report-address" placeholder="Street address or nearby landmark">
+                        <input type="text" id="report-city" placeholder="City" style="margin-top:0.5rem">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary full-width">Submit Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Details Panel -->
+    <div id="details-panel" class="hidden">
+        <div class="details-header">
+            <div>
+                <h2 id="det-title">Pothole on Main Street</h2>
+                <div class="tags">
+                    <span class="tag tag-verified" id="det-status">VERIFIED</span>
+                    <span class="tag tag-high" id="det-severity">HIGH</span>
+                </div>
+            </div>
+            <button class="btn-close" id="btn-close-details"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="details-body">
+            <div class="section">
+                <h3>Description</h3>
+                <p id="det-desc">Large pothole causing traffic issues near the intersection</p>
+            </div>
+            <div class="section">
+                <h3>Category</h3>
+                <span class="tag tag-gray">ROAD ISSUE</span>
+            </div>
+            <div class="section">
+                <h3><i class="fa-solid fa-location-dot"></i> Location</h3>
+                <p id="det-address">123 Main St, New York, NY</p>
+                <p class="coords" id="det-coords">Coordinates: 40.7128, -74.0060</p>
+            </div>
+            <div class="section">
+                <h3><i class="fa-regular fa-user"></i> Reported By</h3>
+                <p id="det-user">John Citizen</p>
+                <p class="date"><i class="fa-regular fa-calendar"></i> <span id="det-date">10.04.2026, 12:30:00</span></p>
+            </div>
+            <div class="section">
+                <h3><i class="fa-regular fa-comment"></i> Comments (0)</h3>
+                <div class="comments-box" id="det-comments">
+                    <!-- comments here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 400px; padding: 2rem;">
+            <div style="display: flex; justify-content: flex-end;">
+                <button class="btn-close" id="btn-close-login"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="brand mb-4" style="justify-content: center; margin-bottom: 1rem;">
+                <h1 style="color: var(--text-dark); margin:0;">MyCity</h1>
+            </div>
+            <p style="text-align: center; color: var(--text-gray); margin-bottom: 2rem;">Please sign in</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" required value="bartosz.kujawa@mail.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-pass" required value="zaq1@WSX">
+                </div>
+                <div id="login-error" style="color:red; font-size:14px; margin-bottom:1rem; display:none;"></div>
+                <button type="submit" class="btn-primary full-width">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

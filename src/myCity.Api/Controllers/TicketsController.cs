@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using myCity.Api.Dtos;
 using myCity.Api.Entities;
@@ -30,6 +30,7 @@ namespace myCity.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<TicketDto>>> GetTickets()
         {
             var tickets = await _ticketService.GetTicketsAsync();
@@ -37,6 +38,7 @@ namespace myCity.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<TicketDetailsDto>> GetTicketById(int id)
         {
             var ticket = await _ticketService.GetTicketByIdAsync(id);
