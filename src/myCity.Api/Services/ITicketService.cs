@@ -1,4 +1,4 @@
-﻿using myCity.Api.Entities;
+using myCity.Api.Entities;
 using myCity.Api.Dtos;
 
 namespace myCity.Api.Services
@@ -16,6 +16,8 @@ namespace myCity.Api.Services
 
         //zmiana przez urzednika - zamkniecie lub odrzucenie ticketu
         Task<TicketDetailsDto?> ChangeTicketStatusByOfficialAsync(int ticketId, ChangeTicketStatusDto dto, int officialId);
+        Task<TicketDetailsDto?> AddCommentByOfficialAsync(int ticketId, AddCommentDto dto, int officialId);
+        Task<bool> DeleteCommentByOfficialAsync(int commentId);
         Task<bool> DeleteTicketAsync(int ticketId);
         
     }

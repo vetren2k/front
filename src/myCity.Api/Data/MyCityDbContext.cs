@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using myCity.Api.Entities;
 using myCity.Api.Entities.Enums; // Konieczne dla Enumów
 
@@ -47,37 +47,37 @@ namespace myCity.Api.Data
             // 2. WSZYSCY UŻYTKOWNICY (MIESZKAŃCY, URZĘDNICY, WYKONAWCY)
             modelBuilder.Entity<User>().HasData(
                 // Residents (Mieszkańcy)
-                new User { Id = 1, Role = UserRole.Resident, Mail = "bartosz.kujawa@mail.com", Password = "zaq1@WSX", FirstName = "Bartosz", LastName = "Kujawa", PhoneNumber = "111222333", TrustScore = 100 },
-                new User { Id = 2, Role = UserRole.Resident, Mail = "oskar.krenke@mail.com", Password = "zaq1@WSX", FirstName = "Oskar", LastName = "Krenke", PhoneNumber = "123123123", TrustScore = 50 },
-                new User { Id = 3, Role = UserRole.Resident, Mail = "jakub.markuszewski@mail.com", Password = "zaq1@WSX", FirstName = "Jakub", LastName = "Markuszewski", PhoneNumber = "000000000", TrustScore = 0 },
-                new User { Id = 4, Role = UserRole.Resident, Mail = "kacper.tubiak@mail.com", Password = "zaq1@WSX", FirstName = "Kacper", LastName = "Tubiak", PhoneNumber = "111111111", TrustScore = -10 },
+                new User { Id = 1, Role = UserRole.Mieszkaniec, Mail = "bartosz.kujawa@mail.com", Password = "zaq1@WSX", FirstName = "Bartosz", LastName = "Kujawa", PhoneNumber = "111222333", TrustScore = 100 },
+                new User { Id = 2, Role = UserRole.Mieszkaniec, Mail = "oskar.krenke@mail.com", Password = "zaq1@WSX", FirstName = "Oskar", LastName = "Krenke", PhoneNumber = "123123123", TrustScore = 50 },
+                new User { Id = 3, Role = UserRole.Mieszkaniec, Mail = "jakub.markuszewski@mail.com", Password = "zaq1@WSX", FirstName = "Jakub", LastName = "Markuszewski", PhoneNumber = "000000000", TrustScore = 0 },
+                new User { Id = 4, Role = UserRole.Mieszkaniec, Mail = "kacper.tubiak@mail.com", Password = "zaq1@WSX", FirstName = "Kacper", LastName = "Tubiak", PhoneNumber = "111111111", TrustScore = -10 },
 
                 // Officials (Urzędnicy) - pole Position
-                new User { Id = 5, Role = UserRole.Official, Position = "Dyrektor Wydziału", Mail = "joanna.pinska@gdansk.pl", Password = "zaq1@WSX", FirstName = "Joanna", LastName = "Pińska" },
-                new User { Id = 6, Role = UserRole.Official, Position = "Dyrektor Zarządu Dróg", Mail = "anna.bobrowska@gzdiz.gda.pl", Password = "zaq1@WSX", FirstName = "Anna", LastName = "Bobrowska" },
-                new User { Id = 7, Role = UserRole.Official, Position = "Dyrektor Zarządu Zieleni", Mail = "barbara.tusk-krajewska@gzz.gda.pl", Password = "zaq1@WSX", FirstName = "Barbara", LastName = "Tusk-Krajewska" },
-                new User { Id = 8, Role = UserRole.Official, Position = "Dyrektor Wydziału", Mail = "anna.trzuskolas@gdansk.pl", Password = "zaq1@WSX", FirstName = "Anna", LastName = "Trzuskolas" },
-                new User { Id = 9, Role = UserRole.Official, Position = "Dyrektor Wydziału", Mail = "anna.wolodzko@gdansk.pl", Password = "zaq1@WSX", FirstName = "Anna", LastName = "Wołodźko" },
-                new User { Id = 10, Role = UserRole.Official, Position = "Dyrektor Wydziału", Mail = "wi@gdansk.gda.pl", Password = "zaq1@WSX", FirstName = "Piotr", LastName = "Spyra" },
-                new User { Id = 11, Role = UserRole.Official, Position = "Komendant Straży Miejskiej", Mail = "leszek.walczak@strazmiejska.gda.pl", Password = "zaq1@WSX", FirstName = "Leszek", LastName = "Walczak" },
-                new User { Id = 12, Role = UserRole.Official, Position = "p.o. Dyrektora ZTM", Mail = "lukasz.klos@ztm.gda.pl", Password = "zaq1@WSX", FirstName = "Łukasz", LastName = "Kłos" },
-                new User { Id = 13, Role = UserRole.Official, Position = "Wiceprezes Zarządu", Mail = "danuta.jarzembowska@gdanskiewodociagi.pl", Password = "zaq1@WSX", FirstName = "Danuta", LastName = "Jarzembowska" },
+                new User { Id = 5, Role = UserRole.Urzędnik, Position = "Dyrektor Wydziału", Mail = "joanna.pinska@gdansk.pl", Password = "zaq1@WSX", FirstName = "Joanna", LastName = "Pińska" },
+                new User { Id = 6, Role = UserRole.Urzędnik, Position = "Dyrektor Zarządu Dróg", Mail = "anna.bobrowska@gzdiz.gda.pl", Password = "zaq1@WSX", FirstName = "Anna", LastName = "Bobrowska" },
+                new User { Id = 7, Role = UserRole.Urzędnik, Position = "Dyrektor Zarządu Zieleni", Mail = "barbara.tusk-krajewska@gzz.gda.pl", Password = "zaq1@WSX", FirstName = "Barbara", LastName = "Tusk-Krajewska" },
+                new User { Id = 8, Role = UserRole.Urzędnik, Position = "Dyrektor Wydziału", Mail = "anna.trzuskolas@gdansk.pl", Password = "zaq1@WSX", FirstName = "Anna", LastName = "Trzuskolas" },
+                new User { Id = 9, Role = UserRole.Urzędnik, Position = "Dyrektor Wydziału", Mail = "anna.wolodzko@gdansk.pl", Password = "zaq1@WSX", FirstName = "Anna", LastName = "Wołodźko" },
+                new User { Id = 10, Role = UserRole.Urzędnik, Position = "Dyrektor Wydziału", Mail = "wi@gdansk.gda.pl", Password = "zaq1@WSX", FirstName = "Piotr", LastName = "Spyra" },
+                new User { Id = 11, Role = UserRole.Urzędnik, Position = "Komendant Straży Miejskiej", Mail = "leszek.walczak@strazmiejska.gda.pl", Password = "zaq1@WSX", FirstName = "Leszek", LastName = "Walczak" },
+                new User { Id = 12, Role = UserRole.Urzędnik, Position = "p.o. Dyrektora ZTM", Mail = "lukasz.klos@ztm.gda.pl", Password = "zaq1@WSX", FirstName = "Łukasz", LastName = "Kłos" },
+                new User { Id = 13, Role = UserRole.Urzędnik, Position = "Wiceprezes Zarządu", Mail = "danuta.jarzembowska@gdanskiewodociagi.pl", Password = "zaq1@WSX", FirstName = "Danuta", LastName = "Jarzembowska" },
 
                 // Contractors (Wykonawcy) - pola Employer i PublicBodyDepartmentId
-                new User { Id = 14, Role = UserRole.Contractor, Employer = "Miasto Gdańsk", PublicBodyDepartmentId = 1, Mail = "jan.kowalski@mycity.pl", Password = "zaq1@WSX", FirstName = "Jan", LastName = "Kowalski" },
-                new User { Id = 15, Role = UserRole.Contractor, Employer = "DrogBud Sp. z o.o.", PublicBodyDepartmentId = 2, Mail = "p.nowak@drogbud.pl", Password = "zaq1@WSX", FirstName = "Piotr", LastName = "Nowak" },
-                new User { Id = 16, Role = UserRole.Contractor, Employer = "Asfalt-Max", PublicBodyDepartmentId = 2, Mail = "m.wisniewski@asfalt-max.pl", Password = "zaq1@WSX", FirstName = "Michał", LastName = "Wiśniewski" },
-                new User { Id = 17, Role = UserRole.Contractor, Employer = "Eko-Zieleń", PublicBodyDepartmentId = 3, Mail = "a.wojcik@eko-zielen.pl", Password = "zaq1@WSX", FirstName = "Adam", LastName = "Wójcik" },
-                new User { Id = 18, Role = UserRole.Contractor, Employer = "Parki i Ogrody S.A.", PublicBodyDepartmentId = 3, Mail = "t.kowalczyk@parkiiogrody.pl", Password = "zaq1@WSX", FirstName = "Tomasz", LastName = "Kowalczyk" },
-                new User { Id = 19, Role = UserRole.Contractor, Employer = "Drzew-Serwis", PublicBodyDepartmentId = 3, Mail = "k.kaminski@drzew-serwis.pl", Password = "zaq1@WSX", FirstName = "Krzysztof", LastName = "Kamiński" },
-                new User { Id = 20, Role = UserRole.Contractor, Employer = "Eco-Tech", PublicBodyDepartmentId = 4, Mail = "m.lewandowski@eco-tech.pl", Password = "zaq1@WSX", FirstName = "Maciej", LastName = "Lewandowski" },
-                new User { Id = 21, Role = UserRole.Contractor, Employer = "Błysk-Trans", PublicBodyDepartmentId = 5, Mail = "j.zielinski@blysk-trans.pl", Password = "zaq1@WSX", FirstName = "Jakub", LastName = "Zieliński" },
-                new User { Id = 22, Role = UserRole.Contractor, Employer = "Czyste Miasto", PublicBodyDepartmentId = 5, Mail = "s.szymanski@czystemiasto.pl", Password = "zaq1@WSX", FirstName = "Szymon", LastName = "Szymański" },
-                new User { Id = 23, Role = UserRole.Contractor, Employer = "InfraBud", PublicBodyDepartmentId = 6, Mail = "d.wozniak@infrabud.pl", Password = "zaq1@WSX", FirstName = "Dawid", LastName = "Woźniak" },
-                new User { Id = 24, Role = UserRole.Contractor, Employer = "Miasto Gdańsk", PublicBodyDepartmentId = 7, Mail = "k.dabrowski@mycity.pl", Password = "zaq1@WSX", FirstName = "Kacper", LastName = "Dąbrowski" },
-                new User { Id = 25, Role = UserRole.Contractor, Employer = "Przystanek-Serwis", PublicBodyDepartmentId = 8, Mail = "f.kozlowski@przystanek-serwis.pl", Password = "zaq1@WSX", FirstName = "Filip", LastName = "Kozłowski" },
-                new User { Id = 26, Role = UserRole.Contractor, Employer = "Aqua-Bud", PublicBodyDepartmentId = 9, Mail = "m.jankowski@aqua-bud.pl", Password = "zaq1@WSX", FirstName = "Mateusz", LastName = "Jankowski" },
-                new User { Id = 27, Role = UserRole.Contractor, Employer = "Hydro-Naprawa", PublicBodyDepartmentId = 9, Mail = "l.mazur@hydro-naprawa.pl", Password = "zaq1@WSX", FirstName = "Łukasz", LastName = "Mazur" }
+                new User { Id = 14, Role = UserRole.Wykonawca, Employer = "Miasto Gdańsk", PublicBodyDepartmentId = 1, Mail = "jan.kowalski@mycity.pl", Password = "zaq1@WSX", FirstName = "Jan", LastName = "Kowalski" },
+                new User { Id = 15, Role = UserRole.Wykonawca, Employer = "DrogBud Sp. z o.o.", PublicBodyDepartmentId = 2, Mail = "p.nowak@drogbud.pl", Password = "zaq1@WSX", FirstName = "Piotr", LastName = "Nowak" },
+                new User { Id = 16, Role = UserRole.Wykonawca, Employer = "Asfalt-Max", PublicBodyDepartmentId = 2, Mail = "m.wisniewski@asfalt-max.pl", Password = "zaq1@WSX", FirstName = "Michał", LastName = "Wiśniewski" },
+                new User { Id = 17, Role = UserRole.Wykonawca, Employer = "Eko-Zieleń", PublicBodyDepartmentId = 3, Mail = "a.wojcik@eko-zielen.pl", Password = "zaq1@WSX", FirstName = "Adam", LastName = "Wójcik" },
+                new User { Id = 18, Role = UserRole.Wykonawca, Employer = "Parki i Ogrody S.A.", PublicBodyDepartmentId = 3, Mail = "t.kowalczyk@parkiiogrody.pl", Password = "zaq1@WSX", FirstName = "Tomasz", LastName = "Kowalczyk" },
+                new User { Id = 19, Role = UserRole.Wykonawca, Employer = "Drzew-Serwis", PublicBodyDepartmentId = 3, Mail = "k.kaminski@drzew-serwis.pl", Password = "zaq1@WSX", FirstName = "Krzysztof", LastName = "Kamiński" },
+                new User { Id = 20, Role = UserRole.Wykonawca, Employer = "Eco-Tech", PublicBodyDepartmentId = 4, Mail = "m.lewandowski@eco-tech.pl", Password = "zaq1@WSX", FirstName = "Maciej", LastName = "Lewandowski" },
+                new User { Id = 21, Role = UserRole.Wykonawca, Employer = "Błysk-Trans", PublicBodyDepartmentId = 5, Mail = "j.zielinski@blysk-trans.pl", Password = "zaq1@WSX", FirstName = "Jakub", LastName = "Zieliński" },
+                new User { Id = 22, Role = UserRole.Wykonawca, Employer = "Czyste Miasto", PublicBodyDepartmentId = 5, Mail = "s.szymanski@czystemiasto.pl", Password = "zaq1@WSX", FirstName = "Szymon", LastName = "Szymański" },
+                new User { Id = 23, Role = UserRole.Wykonawca, Employer = "InfraBud", PublicBodyDepartmentId = 6, Mail = "d.wozniak@infrabud.pl", Password = "zaq1@WSX", FirstName = "Dawid", LastName = "Woźniak" },
+                new User { Id = 24, Role = UserRole.Wykonawca, Employer = "Miasto Gdańsk", PublicBodyDepartmentId = 7, Mail = "k.dabrowski@mycity.pl", Password = "zaq1@WSX", FirstName = "Kacper", LastName = "Dąbrowski" },
+                new User { Id = 25, Role = UserRole.Wykonawca, Employer = "Przystanek-Serwis", PublicBodyDepartmentId = 8, Mail = "f.kozlowski@przystanek-serwis.pl", Password = "zaq1@WSX", FirstName = "Filip", LastName = "Kozłowski" },
+                new User { Id = 26, Role = UserRole.Wykonawca, Employer = "Aqua-Bud", PublicBodyDepartmentId = 9, Mail = "m.jankowski@aqua-bud.pl", Password = "zaq1@WSX", FirstName = "Mateusz", LastName = "Jankowski" },
+                new User { Id = 27, Role = UserRole.Wykonawca, Employer = "Hydro-Naprawa", PublicBodyDepartmentId = 9, Mail = "l.mazur@hydro-naprawa.pl", Password = "zaq1@WSX", FirstName = "Łukasz", LastName = "Mazur" }
             );
 
             // 3. DEPARTAMENTY (Oparte na nowej nazwie PublicBodyDepartment i relacji z ExecutiveId)

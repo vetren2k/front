@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using myCity.Api.Data;
 using myCity.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

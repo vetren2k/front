@@ -70,7 +70,7 @@ namespace myCity.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Official")] //tylko dla urzednika
+        [Authorize(Roles = "Urzędnik")] //tylko dla urzednika
         public async Task<ActionResult<TicketDetailsDto>> UpdateTicket(int id, [FromBody] UpdateTicketDto dto)
         {
             var officialId = GetCurrentUserId();
@@ -85,7 +85,7 @@ namespace myCity.Api.Controllers
         }
 
         [HttpPatch("{id}/assign")]
-        [Authorize(Roles = "Official")]
+        [Authorize(Roles = "Urzędnik")]
         public async Task<ActionResult<TicketDetailsDto>> AssignContractor(int id, [FromBody] AssignContractorDto dto)
         {
             var officialId = GetCurrentUserId();
@@ -100,7 +100,7 @@ namespace myCity.Api.Controllers
         }
 
         [HttpPatch("{id}/official-status")]
-        [Authorize(Roles = "Official")]
+        [Authorize(Roles = "Urzędnik")]
         public async Task<ActionResult<TicketDetailsDto>> ChangeTicketStatusByOfficial(int id, [FromBody] ChangeTicketStatusDto dto)
         {
             var officialId = GetCurrentUserId();
@@ -115,7 +115,7 @@ namespace myCity.Api.Controllers
         }
 
         [HttpGet("assigned")]
-        [Authorize(Roles = "Contractor")] // tylko dla wykonawcy
+        [Authorize(Roles = "Wykonawca")] // tylko dla wykonawcy
         public async Task<ActionResult<IEnumerable<TicketDto>>> GetAssignedTickets()
         {
             var contractorId = GetCurrentUserId();
@@ -124,7 +124,7 @@ namespace myCity.Api.Controllers
         }
 
         [HttpPatch("{id}/status")]
-        [Authorize(Roles = "Contractor")]
+        [Authorize(Roles = "Wykonawca")]
         public async Task<ActionResult<TicketDetailsDto>> ChangeTicketStatus(int id, [FromBody] ChangeTicketStatusDto dto)
         {
             var contractorId = GetCurrentUserId();
@@ -146,9 +146,32 @@ namespace myCity.Api.Controllers
             }
         }
 
+        [HttpPost("{id}/comments")]
+        [Authorize(Roles = "Urzędnik")]
+        public async Task<ActionResult<TicketDetailsDto>> AddCommentByOfficial(int id, [FromBody] AddCommentDto dto)
+        {
+            var officialId = GetCurrentUserId();
+            var updatedTicket = await _ticketService.AddCommentByOfficialAsync(id, dto, officialId);
+            
+            if (updatedTicket == null)
+                return NotFound("Nie znaleziono zgłoszenia.");
+
+            return Ok(updatedTicket);
+        }
+
+        [HttpDelete("comments/{commentId}")]
+        [Authorize(Roles = "Urzędnik")]
+        public async Task<IActionResult> DeleteCommentByOfficial(int commentId)
+        {
+            var deleted = await _ticketService.DeleteCommentByOfficialAsync(commentId);
+            if (!deleted) return NotFound("Nie znaleziono komentarza.");
+            
+            return NoContent();
+        }
+
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Official")] // z konta urzednika
+        [Authorize(Roles = "Urzędnik")] // z konta urzednika
         public async Task<IActionResult> DeleteTicket(int id)
         {
             var deleted = await _ticketService.DeleteTicketAsync(id);

@@ -34,7 +34,8 @@ namespace myCity.Api.Services
                     Priority = x.Priority,
                     Status = x.CurrentStatus,
                     DepartmentName = x.PublicBodyDepartment != null ? x.PublicBodyDepartment.Name : "Brak przypisania",
-                    CreatorName = $"{x.Creator.FirstName} {x.Creator.LastName}"
+                    CreatorName = $"{x.Creator.FirstName} {x.Creator.LastName}",
+                    CreationTimestamp = x.CreationTimestamp
                 })
                 .ToListAsync();
 
@@ -145,6 +146,7 @@ namespace myCity.Api.Services
                     .OrderByDescending(log => log.Timestamp)
                     .Select(log => new StatusLogDto
                     {
+                        Id = log.Id,
                         Title = log.Title,
                         Comment = log.Comment,
                         Timestamp = log.Timestamp,
@@ -325,6 +327,37 @@ namespace myCity.Api.Services
             await _context.SaveChangesAsync();
 
             return await GetTicketByIdAsync(ticket.Id);
+        }
+
+        public async Task<TicketDetailsDto?> AddCommentByOfficialAsync(int ticketId, AddCommentDto dto, int officialId)
+        {
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+            if (ticket == null) return null;
+
+            var log = new StatusLog
+            {
+                TicketId = ticket.Id,
+                Title = ticket.CurrentStatus, // keep current status
+                Comment = dto.Comment,
+                CreatorId = officialId,
+                Timestamp = DateTime.UtcNow
+            };
+
+            _context.StatusLogs.Add(log);
+            await _context.SaveChangesAsync();
+
+            return await GetTicketByIdAsync(ticket.Id);
+        }
+
+        public async Task<bool> DeleteCommentByOfficialAsync(int commentId)
+        {
+            var log = await _context.StatusLogs.FindAsync(commentId);
+            if (log == null) return false;
+
+            _context.StatusLogs.Remove(log);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
 
